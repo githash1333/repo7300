@@ -10,11 +10,21 @@ import push
 import ast
 import warnings
 import fcm
+import subprocess
 warnings.filterwarnings('ignore')
 base = st.title("SignUp/Login")
 
 ph_number = st.text_input("Enter a Phone Number",placeholder="+91",max_chars=10)
 import requests
+
+
+
+
+
+
+
+
+
 def send_notification(ip_address, port, endpoint, title, body):
     url = f"http://{ip_address}:{port}/{endpoint}"
     payload = {
@@ -59,99 +69,99 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
     recipient_number =   "+91"+str(ph_number)
 
 
-    import google.auth
-    from google.auth import jwt
-    import time
+    # import google.auth
+    # from google.auth import jwt
+    # import time
 
-    from firebase_admin import credentials
-    import firebase_admin
+    # from firebase_admin import credentials
+    # import firebase_admin
 
-    try:
+    # try:
 
-        # Your service account key file
-        service_account_file = 'servicejson.json'
+    #     # Your service account key file
+    #     service_account_file = 'servicejson.json'
 
-        cred = credentials.Certificate("servicejson.json")
-        firebase_admin.initialize_app(cred)
+    #     cred = credentials.Certificate("servicejson.json")
+    #     firebase_admin.initialize_app(cred)
 
-        # Scopes required by the API
-        scopes = ['https://www.googleapis.com/auth/cloud-platform']
+    #     # Scopes required by the API
+    #     scopes = ['https://www.googleapis.com/auth/cloud-platform']
 
-        # Load the service account credentials
-        credentials_ = google.auth.load_credentials_from_file(service_account_file, scopes=scopes)[0]
-        print(credentials_)
-        # Define the JWT payload
-        payload = {
-        'iss': credentials_.service_account_email,
-        'sub': credentials_.service_account_email,
-        'aud':  'https://your-api-endpoint.com',
-        'iat': int(time.time()),
-        'exp': int(time.time()) + 3600 # Token expiry time (1 hour)
-        }
+    #     # Load the service account credentials
+    #     credentials_ = google.auth.load_credentials_from_file(service_account_file, scopes=scopes)[0]
+    #     print(credentials_)
+    #     # Define the JWT payload
+    #     payload = {
+    #     'iss': credentials_.service_account_email,
+    #     'sub': credentials_.service_account_email,
+    #     'aud':  'https://your-api-endpoint.com',
+    #     'iat': int(time.time()),
+    #     'exp': int(time.time()) + 3600 # Token expiry time (1 hour)
+    #     }
 
-        # Sign the JWT
-        signed_jwt = jwt.encode(credentials_.signer, payload)
+    #     # Sign the JWT
+    #     signed_jwt = jwt.encode(credentials_.signer, payload)
 
 
-        print(str(signed_jwt))
+    #     print(str(signed_jwt))
 
-        print(type(signed_jwt))
+    #     print(type(signed_jwt))
 
-        # Decode the byte string to a regular string
-        regular_string = signed_jwt.decode('utf-8')
+    #     # Decode the byte string to a regular string
+    #     regular_string = signed_jwt.decode('utf-8')
 
-        # Use the signed JWT for authentication
-        headers = {'Authorization': f'Bearer {regular_string}'}
-
-        
-
+    #     # Use the signed JWT for authentication
+    #     headers = {'Authorization': f'Bearer {regular_string}'}
 
         
 
-        # custom_token = mongo.device_res_id()
 
-        document = {"UID":uid , "recipientNumber":recipient_number,"fcm_token":str(regular_string)}
+        
 
-        print(document)
+    #     # custom_token = mongo.device_res_id()
 
-        response_dict = mongo.createdbInsertOne(document)
+    #     document = {"UID":uid , "recipientNumber":recipient_number,"fcm_token":str(regular_string)}
 
-        print(response_dict)
+    #     print(document)
 
-        print(type(response_dict))
+    #     response_dict = mongo.createdbInsertOne(document)
 
-        try:
-            dict_obj = ast.literal_eval(response_dict)
+    #     print(response_dict)
 
-            print("***********")
+    #     print(type(response_dict))
 
-            print(dict_obj)
+    #     try:
+    #         dict_obj = ast.literal_eval(response_dict)
 
-            print(type(dict_obj))
-        except:
-            pass
-    except:
-        pass
+    #         print("***********")
+
+    #         print(dict_obj)
+
+    #         print(type(dict_obj))
+    #     except:
+    #         pass
+    # except:
+    #     pass
 
 
-    #findDataMongo(document)
+    # #findDataMongo(document)
 
 
 
-    # if len(dict_obj)!=0:
-    #     myvariable = dict_obj['document']['recipientNumber']
+    # # if len(dict_obj)!=0:
+    # #     myvariable = dict_obj['document']['recipientNumber']
 
-    #     device_token = dict_obj['document']['fcm_token']
-    #     # myvariable = new_dict['recipientNumber']
+    # #     device_token = dict_obj['document']['fcm_token']
+    # #     # myvariable = new_dict['recipientNumber']
 
-    #     print(device_token)
+    # #     print(device_token)
 
-    import firebase_push
-    try:
-        firebase_push.send(document)
-        print("success")
-    except:
-        print("Failed")
+    # import firebase_push
+    # try:
+    #     firebase_push.send(document)
+    #     print("success")
+    # except:
+    #     print("Failed")
 
     try:
         import requests
@@ -167,7 +177,7 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
         # Example usage
         ip_addresses = [
-            {"ip": f"{ip}", "port": 8097, "endpoint": "notify"},
+            {"ip": f"{ip}", "port": 8085, "endpoint": "notify"},
         ]
 
         for device in ip_addresses:
