@@ -69,6 +69,8 @@ def get_local_ip_address():
 import firebase_admin
 from firebase_admin import credentials, messaging
 def send_notification1(token, title, body):
+    if not isinstance(token, str) or not token:
+        raise ValueError("Invalid token: must be a non-empty string.")
     message = messaging.Message(
         notification=messaging.Notification(
             title=title,
@@ -93,6 +95,12 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
     # firebase_admin.initialize_app(cred)
 
     custom_token = mongo.device_res_id()
+
+    print(custom_token)
+
+    custom_token = custom_token.decode('uft-8')
+
+    
 
     # Example usage
     device_token = custom_token
