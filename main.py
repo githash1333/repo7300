@@ -69,8 +69,7 @@ def get_local_ip_address():
 import firebase_admin
 from firebase_admin import credentials, messaging
 def send_notification1(token, title, body):
-    if not isinstance(token, str) or not token:
-        raise ValueError("Invalid token: must be a non-empty string.")
+    
     message = messaging.Message(
         notification=messaging.Notification(
             title=title,
