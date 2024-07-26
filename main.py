@@ -11,6 +11,11 @@ import ast
 import warnings
 import fcm
 import subprocess
+# import player
+import requests
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 warnings.filterwarnings('ignore')
 base = st.title("SignUp/Login")
 
@@ -62,11 +67,41 @@ def get_local_ip_address():
 
 # print("Local IP Address:", get_local_ip_address())
 
+def send_notification1(token, title, body):
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title=title,
+            body=body,
+        ),
+        token=token,
+    )
+    response = messaging.send(message)
+    return response
+
+
 
 uid = str(uuid.uuid1())
 # if ph_number!='' or len(ph_number)!=0:
 if st.button("Get OTP / Login") and len(ph_number)!=0:
     recipient_number =   "+91"+str(ph_number)
+
+    import firebase_admin
+    from firebase_admin import credentials, messaging
+
+    # Initialize the Firebase Admin SDK
+    cred = credentials.Certificate(r'servicejson.json')
+    firebase_admin.initialize_app(cred)
+
+    custom_token = mongo.device_res_id()
+
+    # Example usage
+    device_token = custom_token
+    response = send_notification1(device_token, 'VM-Test', 'Test Body')
+    print('Successfully sent message:', response)
+
+
+
+
 
 
     # import google.auth
@@ -118,7 +153,7 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
         
 
-    #     # custom_token = mongo.device_res_id()
+        
 
     #     document = {"UID":uid , "recipientNumber":recipient_number,"fcm_token":str(regular_string)}
 
@@ -163,27 +198,27 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
     # except:
     #     print("Failed")
 
-    try:
-        import requests
-        import logging
+    # try:
+    #     import requests
+    #     import logging
 
-        # Configure logging
-        logging.basicConfig(level=logging.INFO)
-        logger = logging.getLogger(__name__)
+    #     # Configure logging
+    #     logging.basicConfig(level=logging.INFO)
+    #     logger = logging.getLogger(__name__)
 
-        ip = get_local_ip_address()
+    #     ip = get_local_ip_address()
 
         
 
-        # Example usage
-        ip_addresses = [
-            {"ip": f"{ip}", "port": 8085, "endpoint": "notify"},
-        ]
+    #     # Example usage
+    #     ip_addresses = [
+    #         {"ip": f"{ip}", "port": 8085, "endpoint": "notify"},
+    #     ]
 
-        for device in ip_addresses:
-            send_notification(device["ip"], device["port"], device["endpoint"], "VM-TEST", "This is a test notification.")
-    except:
-        pass
+    #     for device in ip_addresses:
+    #         send_notification(device["ip"], device["port"], device["endpoint"], "VM-TEST", "This is a test notification.")
+    # except:
+    #     pass
         # try:
         #     firebase_push.send_push_notification()
 
