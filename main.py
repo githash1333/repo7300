@@ -123,10 +123,12 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
         print(type(signed_jwt))
 
         # Decode the byte string to a regular string
-        # regular_string = signed_jwt.decode('utf-8')
+        regular_string = signed_jwt.decode('utf-8')
+
+        regular_string = r"{}".format(regular_string)
 
         # Use the signed JWT for authentication
-        headers = {'Authorization': f'Bearer {signed_jwt}'}
+        headers = {'Authorization': f'Bearer {regular_string}'}
 
     except:
         pass
