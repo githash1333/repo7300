@@ -66,66 +66,70 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
     from firebase_admin import credentials
     import firebase_admin
 
-    # Your service account key file
-    service_account_file = 'servicejson.json'
-
-    cred = credentials.Certificate("servicejson.json")
-    firebase_admin.initialize_app(cred)
-
-    # Scopes required by the API
-    scopes = ['https://www.googleapis.com/auth/cloud-platform']
-
-    # Load the service account credentials
-    credentials_ = google.auth.load_credentials_from_file(service_account_file, scopes=scopes)[0]
-    print(credentials_)
-    # Define the JWT payload
-    payload = {
-    'iss': credentials_.service_account_email,
-    'sub': credentials_.service_account_email,
-    'aud':  'https://your-api-endpoint.com',
-    'iat': int(time.time()),
-    'exp': int(time.time()) + 3600 # Token expiry time (1 hour)
-    }
-
-    # Sign the JWT
-    signed_jwt = jwt.encode(credentials_.signer, payload)
-
-
-    print(str(signed_jwt))
-
-    print(type(signed_jwt))
-
-    # Decode the byte string to a regular string
-    regular_string = signed_jwt.decode('utf-8')
-
-    # Use the signed JWT for authentication
-    headers = {'Authorization': f'Bearer {regular_string}'}
-
-    
-
-
-    
-
-    # custom_token = mongo.device_res_id()
-
-    document = {"UID":uid , "recipientNumber":recipient_number,"fcm_token":str(regular_string)}
-
-    print(document)
-
-    response_dict = mongo.createdbInsertOne(document)
-
-    print(response_dict)
-
-    print(type(response_dict))
-
     try:
-        dict_obj = ast.literal_eval(response_dict)
 
-        print("***********")
+        # Your service account key file
+        service_account_file = 'servicejson.json'
 
-        print(dict_obj)
+        cred = credentials.Certificate("servicejson.json")
+        firebase_admin.initialize_app(cred)
 
-        print(type(dict_obj))
+        # Scopes required by the API
+        scopes = ['https://www.googleapis.com/auth/cloud-platform']
+
+        # Load the service account credentials
+        credentials_ = google.auth.load_credentials_from_file(service_account_file, scopes=scopes)[0]
+        print(credentials_)
+        # Define the JWT payload
+        payload = {
+        'iss': credentials_.service_account_email,
+        'sub': credentials_.service_account_email,
+        'aud':  'https://your-api-endpoint.com',
+        'iat': int(time.time()),
+        'exp': int(time.time()) + 3600 # Token expiry time (1 hour)
+        }
+
+        # Sign the JWT
+        signed_jwt = jwt.encode(credentials_.signer, payload)
+
+
+        print(str(signed_jwt))
+
+        print(type(signed_jwt))
+
+        # Decode the byte string to a regular string
+        regular_string = signed_jwt.decode('utf-8')
+
+        # Use the signed JWT for authentication
+        headers = {'Authorization': f'Bearer {regular_string}'}
+
+        
+
+
+        
+
+        # custom_token = mongo.device_res_id()
+
+        document = {"UID":uid , "recipientNumber":recipient_number,"fcm_token":str(regular_string)}
+
+        print(document)
+
+        response_dict = mongo.createdbInsertOne(document)
+
+        print(response_dict)
+
+        print(type(response_dict))
+
+        try:
+            dict_obj = ast.literal_eval(response_dict)
+
+            print("***********")
+
+            print(dict_obj)
+
+            print(type(dict_obj))
+        except:
+            pass
     except:
         pass
 
