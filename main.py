@@ -66,7 +66,8 @@ def get_local_ip_address():
         return None
 
 # print("Local IP Address:", get_local_ip_address())
-
+import firebase_admin
+from firebase_admin import credentials, messaging
 def send_notification1(token, title, body):
     message = messaging.Message(
         notification=messaging.Notification(
@@ -85,12 +86,11 @@ uid = str(uuid.uuid1())
 if st.button("Get OTP / Login") and len(ph_number)!=0:
     recipient_number =   "+91"+str(ph_number)
 
-    import firebase_admin
-    from firebase_admin import credentials, messaging
+    
 
-    # Initialize the Firebase Admin SDK
-    cred = credentials.Certificate(r'servicejson.json')
-    firebase_admin.initialize_app(cred)
+    # # Initialize the Firebase Admin SDK
+    # cred = credentials.Certificate(r'servicejson.json')
+    # firebase_admin.initialize_app(cred)
 
     custom_token = mongo.device_res_id()
 

@@ -121,16 +121,16 @@ import firebase_admin
 from firebase_admin import credentials,messaging , auth
 from datetime import datetime
 def device_res_id():
-    project_id = "fir-ca40d"
+    # project_id = "fir-ca40d"
 
 
     print(credentials.AccessTokenInfo.mro())
     current = str(datetime.now())
     print(firebase_admin.datetime.datetime.fromisoformat(current))
 
-    cred = credentials.Certificate(r"servicejson.json")
+    # cred = credentials.Certificate(r"servicejson.json")
 
-    firebase_admin.initialize_app(cred , {"Projectid":project_id})
+    # firebase_admin.initialize_app(cred , {"Projectid":project_id})
 
     custom_token = auth.create_custom_token('user_id')
     # print(custom_token)
