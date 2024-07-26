@@ -91,46 +91,75 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
     recipient_number =   "+91"+str(ph_number)
 
     try:
+        import os
+        from google.oauth2 import service_account
+        from googleapiclient.discovery import build
 
-        # Your service account key file
-        service_account_file = 'servicejson.json'
-
-        cred = credentials.Certificate("servicejson.json")
-        firebase_admin.initialize_app(cred)
-
-        # Scopes required by the API
-        scopes = ['https://www.googleapis.com/auth/cloud-platform']
-
-        # Load the service account credentials
-        credentials_ = google.auth.load_credentials_from_file(service_account_file, scopes=scopes)[0]
-        print(credentials_)
-        # Define the JWT payload
-        payload = {
-        'iss': credentials_.service_account_email,
-        'sub': credentials_.service_account_email,
-        'aud':  'https://your-api-endpoint.com',
-        'iat': int(time.time()),
-        'exp': int(time.time()) + 3600 # Token expiry time (1 hour)
+        creds = service_account.Credentials.from_service_account_file(r"servicejson.json")
+        fcm_service = build('fcm','v1',credentials=creds)
+        token = mongo.device_res_id()
+        print(token)
+        message = {
+            'data':{
+                'score':'850',
+                'time':'2:45'
+            },
+            'notification':{
+                'title':'FCM',
+                'body':'Notification'
+            },
+            'token':token
         }
+        response = fcm_service.projects().message().send(name = 'projects/fir-ca40d/messages:send',body = message).execute()
+        print(response)    #     # Your service account key file
+    #     service_account_file = 'servicejson.json'
 
-        # Sign the JWT
-        signed_jwt = jwt.encode(credentials_.signer, payload)
-
-
-        print(str(signed_jwt))
-
-        print(type(signed_jwt))
-
-        # Decode the byte string to a regular string
-        regular_string = signed_jwt.decode('utf-8')
-
-        regular_string = r"{}".format(regular_string)
-
-        # Use the signed JWT for authentication
-        headers = {'Authorization': f'Bearer {regular_string}'}
-
-    except:
+        # cred = credentials.Certificate("servicejson.json")
+        # firebase_admin.initialize_app(cred,{"projectid":"fir-ca40d"})
+        # device_token = messaging._get_messaging_service
+    except: 
         pass
+
+    #     # Scopes required by the API
+    #     scopes = ['https://www.googleapis.com/auth/cloud-platform']
+
+    #     # Load the service account credentials
+    #     credentials_ = google.auth.load_credentials_from_file(service_account_file, scopes=scopes)[0]
+    #     print(credentials_)
+    #     # Define the JWT payload
+    #     payload = {
+    #     'iss': credentials_.service_account_email,
+    #     'sub': credentials_.service_account_email,
+    #     'aud':  'https://your-api-endpoint.com',
+    #     'iat': int(time.time()),
+    #     'exp': int(time.time()) + 3600 # Token expiry time (1 hour)
+    #     }
+
+    #     # Sign the JWT
+    #     signed_jwt = jwt.encode(credentials_.signer, payload)
+
+
+    #     print(str(signed_jwt))
+
+    #     print(type(signed_jwt))
+
+    #     # Decode the byte string to a regular string
+    #     regular_string = signed_jwt.decode('utf-8')
+
+    #     regular_string = r"{}".format(regular_string)
+    #     print(regular_string)
+
+    #     # Use the signed JWT for authentication
+    #     headers = {'Authorization': f'Bearer {regular_string}'}
+
+    #     try:
+    #         validated_token = validate_token(regular_string)
+    #         # Use the validated token
+    #     except ValueError as e:
+    #         print(f"Error: {e}")
+
+    # except:
+    #     pass
 
     
 
@@ -152,9 +181,9 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
     
 
     # Example usage
-    device_token = signed_jwt
-    response = send_notification1(device_token, 'VM-Test', 'Test Body')
-    print('Successfully sent message:', response)
+    # device_token = signed_jwt
+    # response = send_notification1(device_token, 'VM-Test', 'Test Body')
+    # print('Successfully sent message:', response)
 
 
 

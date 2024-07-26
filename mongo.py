@@ -133,6 +133,8 @@ def device_res_id():
     firebase_admin.initialize_app(cred , {"Projectid":project_id})
 
     custom_token = auth.create_custom_token('user_id')
+
+
     # print(custom_token)
     return custom_token
 
