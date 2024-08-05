@@ -111,7 +111,7 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
     response = requests.request("POST", url, headers=headers, data=payload)
 
-    st.header(response.text)
+    st.text(response.text)
     
         # device_token = messaging._get_messaging_service
 
@@ -347,8 +347,10 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
 
     # 
+    import time
+    time.sleep(10)
 
-    # st.switch_page(r"pages/GetPhoneResponse.py")
+    st.switch_page(r"pages/GetPhoneResponse.py")
 
 
     
