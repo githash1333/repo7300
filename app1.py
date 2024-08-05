@@ -1,3 +1,8 @@
+import requests
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+import uuid
 def send_notification(ip_address, port, endpoint, title, body):
     url = f"http://{ip_address}:{port}/{endpoint}"
     payload = {
