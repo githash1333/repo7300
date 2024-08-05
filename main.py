@@ -62,7 +62,7 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
     print(result.stdout)
 
-    print("Flask app is running.....")
+    st.header("Flask app is running.....")
 
     
 
@@ -74,7 +74,7 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
 
     # URL of the Flask app endpoint
-    url = 'http://127.0.0.1:5000/get-data'
+    url = 'http://127.0.0.1:8421/get-data'
 
     # Make a GET request
     response = requests.get(url)
@@ -83,10 +83,10 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
     if response.status_code == 200:
         # Parse the JSON response
         data = response.json()
-        print("Response JSON:")
+        st.header("Response JSON:")
         print(data)
     else:
-        print("Failed to fetch data")
+        st.header("Failed to fetch data")
         print(f"Status code: {response.status_code}")
 
 
@@ -109,7 +109,7 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
         response = requests.request("POST", url, headers=headers, data=payload)
 
-        print(response.text)
+        st.header(response.text)
     except:
         pass
         # device_token = messaging._get_messaging_service
