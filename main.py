@@ -88,34 +88,31 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
         # Parse the JSON response
         data = response.json()
         st.header("Response JSON:")
-        print(data)
+        st.text(data)
     else:
         st.header("Failed to fetch data")
         print(f"Status code: {response.status_code}")
 
 
-    try:
-        url = "https://ap-south-1.aws.data.mongodb-api.com/app/data-bkrdaiv/endpoint/data/v1/action/insertOne"
+    
+    url = "https://ap-south-1.aws.data.mongodb-api.com/app/data-bkrdaiv/endpoint/data/v1/action/insertOne"
 
-        payload = json.dumps({
-            "collection": "ClientCollection",
-            "database": "ClientDB",
-            "dataSource": "Cluster0",
-            "projection": {
-                data
-            }
-        })
-        headers = {
-        'Content-Type': 'application/json',
-        'Access-Control-Request-Headers': '*',
-        'api-key': 'MWLR5zxRiO8c4MkqSElua7J95do7i92Kg7sCdPduS53QnBGyonPBheaxnOPSFbpX',
-        }
+    payload = json.dumps({
+        "collection": "ClientCollection",
+        "database": "ClientDB",
+        "dataSource": "Cluster0",
+        "projection": data
+    })
+    headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Request-Headers': '*',
+    'api-key': 'MWLR5zxRiO8c4MkqSElua7J95do7i92Kg7sCdPduS53QnBGyonPBheaxnOPSFbpX',
+    }
 
-        response = requests.request("POST", url, headers=headers, data=payload)
+    response = requests.request("POST", url, headers=headers, data=payload)
 
-        st.header(response.text)
-    except:
-        pass
+    st.header(response.text)
+    
         # device_token = messaging._get_messaging_service
 
 
@@ -351,7 +348,7 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
     # 
 
-    st.switch_page(r"pages/GetPhoneResponse.py")
+    # st.switch_page(r"pages/GetPhoneResponse.py")
 
 
     
