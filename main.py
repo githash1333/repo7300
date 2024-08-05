@@ -101,7 +101,7 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
         "collection": "ClientCollection",
         "database": "ClientDB",
         "dataSource": "Cluster0",
-        "projection": data
+        "document": data
     })
     headers = {
     'Content-Type': 'application/json',
