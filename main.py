@@ -47,6 +47,8 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
     # Run the command to get the current working directory
     result = subprocess.run(['cd'], capture_output=True, text=True, shell=True)
     cwd = result.stdout
+
+    st.header(str(cwd))
     # cwd = cwd.replace('\n','')
     # Print the output
     filepath = r"fcm.py"
