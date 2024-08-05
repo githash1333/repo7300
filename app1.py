@@ -38,6 +38,9 @@ def get_local_ip_address():
         print(f"Unable to get local IP address: {e}")
         return None
 
+
+    
+
 # print("Local IP Address:", get_local_ip_address())
 import firebase_admin
 from firebase_admin import credentials, messaging

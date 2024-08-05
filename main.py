@@ -49,7 +49,7 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
     result = subprocess.run(['cd'], capture_output=True, text=True, shell=True)
     cwd = result.stdout
 
-    st.header(str(cwd))
+    st.text(str(cwd))
     # cwd = cwd.replace('\n','')
     # Print the output
     filepath = r"fcm.py"
@@ -65,7 +65,7 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
     print(result.stdout)
 
-    st.header("Flask app is running.....")
+    st.text("Flask app is running.....")
 
     
 
@@ -77,6 +77,9 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
 
     # URL of the Flask app endpoint
+    import time
+    time.sleep(60)
+    
     
     url = 'http://127.0.0.1:8421/get-data'
 
