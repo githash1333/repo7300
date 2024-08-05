@@ -17,10 +17,21 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 import subprocess
+import socket
 warnings.filterwarnings('ignore')
 
 
-
+def get_local_ip_address():
+    try:
+        # Connect to an external server to get the local IP address
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))  # Using Google DNS server address
+        local_ip_address = s.getsockname()[0]
+        s.close()
+        return local_ip_address
+    except Exception as e:
+        print(f"Unable to get local IP address: {e}")
+        return None
 
 base = st.title("SignUp/Login")
 
@@ -76,7 +87,8 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
 
 
     # URL of the Flask app endpoint
-    url = 'http://127.0.0.1:8421/get-data'
+    ip = get_local_ip_address()
+    url = f'http://{ip}:8421/get-data'
 
     # Make a GET request
     response = requests.get(url)
