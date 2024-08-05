@@ -134,6 +134,8 @@ def device_res_id():
 
     custom_token = auth.create_custom_token('user_id')
 
+    # regular_string = custom_token.decode('uft-8')
+
 
     # print(custom_token)
     return custom_token

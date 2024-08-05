@@ -16,115 +16,145 @@ import requests
 import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+import subprocess
 warnings.filterwarnings('ignore')
+
+
+
+
 base = st.title("SignUp/Login")
 
 ph_number = st.text_input("Enter a Phone Number",placeholder="+91",max_chars=10)
 import requests
 
-
-
-
-
-
-
-
-
-def send_notification(ip_address, port, endpoint, title, body):
-    url = f"http://{ip_address}:{port}/{endpoint}"
-    payload = {
-        "title": title,
-        "body": body
-    }
-    
-    try:
-        response = requests.post(url, json=payload)
-        response.raise_for_status()
-        logger.info(f"Successfully sent notification to {ip_address}:{port}")
-    except requests.exceptions.HTTPError as http_err:
-        logger.error(f"HTTP error occurred: {http_err}")
-    except requests.exceptions.ConnectionError as conn_err:
-        logger.error(f"Connection error occurred: {conn_err}")
-    except requests.exceptions.Timeout as timeout_err:
-        logger.error(f"Timeout error occurred: {timeout_err}")
-    except requests.exceptions.RequestException as req_err:
-        logger.error(f"An error occurred: {req_err}")
-    return
-
-import socket
-
-def get_local_ip_address():
-    try:
-        # Connect to an external server to get the local IP address
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))  # Using Google DNS server address
-        local_ip_address = s.getsockname()[0]
-        s.close()
-        return local_ip_address
-    except Exception as e:
-        print(f"Unable to get local IP address: {e}")
-        return None
-
-# print("Local IP Address:", get_local_ip_address())
-import firebase_admin
-from firebase_admin import credentials, messaging
-def send_notification1(token, title, body):
-    
-    message = messaging.Message(
-        notification=messaging.Notification(
-            title=title,
-            body=body,
-        ),
-        token=token,
-    )
-    response = messaging.send(message)
-    return response
-
-
-
-uid = str(uuid.uuid1())
-import google.auth
-from google.auth import jwt
-import time
 # if ph_number!='' or len(ph_number)!=0:
 if st.button("Get OTP / Login") and len(ph_number)!=0:
     recipient_number =   "+91"+str(ph_number)
 
+
+    # try:
+    #     cred = credentials.Certificate(r"servicejson.json")
+
+    #     firebase_admin.initialize_app(cred)
+
+    #     fcm_client = messaging.Client()
+
+    #     print(fcm_client)
+    # except:
+    #     pass
+
+
+    # Run the command to get the current working directory
+    result = subprocess.run(['cd'], capture_output=True, text=True, shell=True)
+    cwd = result.stdout
+    # cwd = cwd.replace('\n','')
+    # Print the output
+    filepath = r"fcm.py"
+    # import subprocess
+
+    # Define the command to run the Python script
+    command = ['python', filepath]
+
+    # Run the command
+    result = subprocess.Popen(command, text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+
+    # Print the output
+
+    print(result.stdout)
+
+    print("Flask app is running.....")
+
+    
+
+
+
+
+
+
+
+
+    # URL of the Flask app endpoint
+    url = 'http://127.0.0.1:5000/get-data'
+
+    # Make a GET request
+    response = requests.get(url)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the JSON response
+        data = response.json()
+        print("Response JSON:")
+        print(data)
+    else:
+        print("Failed to fetch data")
+        print(f"Status code: {response.status_code}")
+
+
     try:
-        import os
-        from google.oauth2 import service_account
-        from googleapiclient.discovery import build
+        url = "https://ap-south-1.aws.data.mongodb-api.com/app/data-bkrdaiv/endpoint/data/v1/action/insertOne"
 
-        creds = service_account.Credentials.from_service_account_file(r"servicejson.json")
-        fcm_service = build('fcm','v1',credentials=creds)
-        token = mongo.device_res_id()
-        print(token)
-        message = {
-            'data':{
-                'score':'850',
-                'time':'2:45'
-            },
-            'notification':{
-                'title':'FCM',
-                'body':'Notification'
-            },
-            'token':token
+        payload = json.dumps({
+            "collection": "ClientCollection",
+            "database": "ClientDB",
+            "dataSource": "Cluster0",
+            "projection": {
+                data
+            }
+        })
+        headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Request-Headers': '*',
+        'api-key': 'MWLR5zxRiO8c4MkqSElua7J95do7i92Kg7sCdPduS53QnBGyonPBheaxnOPSFbpX',
         }
-        response = fcm_service.projects().message().send(name = 'projects/fir-ca40d/messages:send',body = message).execute()
-        print(response)    #     # Your service account key file
-    #     service_account_file = 'servicejson.json'
 
-        # cred = credentials.Certificate("servicejson.json")
-        # firebase_admin.initialize_app(cred,{"projectid":"fir-ca40d"})
-        # device_token = messaging._get_messaging_service
-    except: 
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        print(response.text)
+    except:
         pass
+        # device_token = messaging._get_messaging_service
+
+
+
+    # try:
+    #     import os
+    #     from google.oauth2 import service_account
+    #     from googleapiclient.discovery import build
+
+    #     creds = service_account.Credentials.from_service_account_file(r"servicejson.json")
+    #     fcm_service = build('fcm','v1',credentials=creds)
+    #     token = mongo.device_res_id()
+    #     try:
+    #         normal_string = token.decode('uft-8')
+    #     except:
+    #         pass
+    #     print(normal_string)
+    #     message = {
+    #         'data':{
+    #             'score':'850',
+    #             'time':'2:45'
+    #         },
+    #         'notification':{
+    #             'title':'FCM',
+    #             'body':'Notification'
+    #         },
+    #         'token':normal_string
+    #     }
+    #     response = fcm_service.projects().message().send(name = 'projects/fir-ca40d/messages:send',body = message).execute()
+    #     print(response)    #     # Your service account key file
+    # #     service_account_file = 'servicejson.json'
+
+    #     # cred = credentials.Certificate("servicejson.json")
+    #     # firebase_admin.initialize_app(cred,{"projectid":"fir-ca40d"})
+    #     # device_token = messaging._get_messaging_service
+    # except: 
+    #     pass
 
     #     # Scopes required by the API
     #     scopes = ['https://www.googleapis.com/auth/cloud-platform']
 
     #     # Load the service account credentials
-    #     credentials_ = google.auth.load_credentials_from_file(service_account_file, scopes=scopes)[0]
+        # credentials_ = google.auth.load_credentials_from_file(service_account_file, scopes=scopes)[0]
     #     print(credentials_)
     #     # Define the JWT payload
     #     payload = {

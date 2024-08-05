@@ -1,30 +1,56 @@
-from flask import Flask, request
-from pyfcm import FCMNotification
+def send_notification(ip_address, port, endpoint, title, body):
+    url = f"http://{ip_address}:{port}/{endpoint}"
+    payload = {
+        "title": title,
+        "body": body
+    }
+    
+    try:
+        response = requests.post(url, json=payload)
+        response.raise_for_status()
+        logger.info(f"Successfully sent notification to {ip_address}:{port}")
+    except requests.exceptions.HTTPError as http_err:
+        logger.error(f"HTTP error occurred: {http_err}")
+    except requests.exceptions.ConnectionError as conn_err:
+        logger.error(f"Connection error occurred: {conn_err}")
+    except requests.exceptions.Timeout as timeout_err:
+        logger.error(f"Timeout error occurred: {timeout_err}")
+    except requests.exceptions.RequestException as req_err:
+        logger.error(f"An error occurred: {req_err}")
+    return
 
-app = Flask(__name__)
+import socket
 
-# Initialize the FCM notification service
-push_service = FCMNotification(service_account_file=r"servicejson.json",project_id="fir-ca40d")
+def get_local_ip_address():
+    try:
+        # Connect to an external server to get the local IP address
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))  # Using Google DNS server address
+        local_ip_address = s.getsockname()[0]
+        s.close()
+        return local_ip_address
+    except Exception as e:
+        print(f"Unable to get local IP address: {e}")
+        return None
 
-# Define a route to push notifications
-@app.route("/push_notification", methods=["POST"])
-def push_notification():
-    # Get the device token from the request
-    device_token = request.json["device_token"]
-
-    # Define the notification message
-    message_title = "VM-Test"
-    message_body = "This is a test notification"
-
-    # Push the notification to the device
-    result = push_service.async_notify_multiple_devices(
-        registration_id=device_token,
-        message_title=message_title,
-        message_body=message_body
+# print("Local IP Address:", get_local_ip_address())
+import firebase_admin
+from firebase_admin import credentials, messaging
+def send_notification1(token, title, body):
+    
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title=title,
+            body=body,
+        ),
+        token=token,
     )
+    response = messaging.send(message)
+    return response
 
-    # Return the result of the push notification
-    return result
 
-if __name__ == "__main__":
-    app.run(debug=True)
+
+uid = str(uuid.uuid1())
+import google.auth
+from google.auth import jwt
+import time
