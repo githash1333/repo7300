@@ -1,0 +1,12 @@
+*.md
+*.yml
+*.yaml
+*.log
+pages/
+docs/
+.venv/
+node_modules/
+coverage/
+.git/
+.idea/
+*.sqlite3
