@@ -45,27 +45,27 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
     #     pass
 
 
-    # Run the command to get the current working directory
-    result = subprocess.run(['cd'], capture_output=True, text=True, shell=True)
-    cwd = result.stdout
+    # # Run the command to get the current working directory
+    # result = subprocess.run(['cd'], capture_output=True, text=True, shell=True)
+    # cwd = result.stdout
 
-    st.text(str(cwd))
-    # cwd = cwd.replace('\n','')
-    # Print the output
-    filepath = r"fcm.py"
-    # import subprocess
+    # st.text(str(cwd))
+    # # cwd = cwd.replace('\n','')
+    # # Print the output
+    # filepath = r"fcm.py"
+    # # import subprocess
 
-    # Define the command to run the Python script
-    command = ['python', filepath]
+    # # Define the command to run the Python script
+    # command = ['python', filepath]
 
-    # Run the command
-    result = subprocess.Popen(command, text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    # # Run the command
+    # result = subprocess.Popen(command, text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
-    # Print the output
+    # # Print the output
 
-    print(result.stdout)
+    # print(result.stdout)
 
-    st.text("Flask app is running.....")
+    # st.text("Flask app is running.....")
 
     
 
@@ -97,24 +97,30 @@ if st.button("Get OTP / Login") and len(ph_number)!=0:
         print(f"Status code: {response.status_code}")
 
 
+
+    try:
+
+
     
-    url = "https://ap-south-1.aws.data.mongodb-api.com/app/data-bkrdaiv/endpoint/data/v1/action/insertOne"
+        url = "https://ap-south-1.aws.data.mongodb-api.com/app/data-bkrdaiv/endpoint/data/v1/action/insertOne"
 
-    payload = json.dumps({
-        "collection": "ClientCollection",
-        "database": "ClientDB",
-        "dataSource": "Cluster0",
-        "document": data
-    })
-    headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Request-Headers': '*',
-    'api-key': 'MWLR5zxRiO8c4MkqSElua7J95do7i92Kg7sCdPduS53QnBGyonPBheaxnOPSFbpX',
-    }
+        payload = json.dumps({
+            "collection": "ClientCollection",
+            "database": "ClientDB",
+            "dataSource": "Cluster0",
+            "document": data
+        })
+        headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Request-Headers': '*',
+        'api-key': 'MWLR5zxRiO8c4MkqSElua7J95do7i92Kg7sCdPduS53QnBGyonPBheaxnOPSFbpX',
+        }
 
-    response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.request("POST", url, headers=headers, data=payload)
 
-    st.text(response.text)
+        st.text(response.text)
+    except:
+        pass
     
         # device_token = messaging._get_messaging_service
 
